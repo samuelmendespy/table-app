@@ -71,42 +71,8 @@ public class Main {
         pessoas.add(pessoa5);
         pessoas.add(pessoa6);
         pessoas.add(pessoa7);
-
-        // Exibição de informações das pessoas e seus documentos
-        System.out.println(formatarListaPessoasTabular(pessoas));
+        
     }
 
-    public static String formatarListaPessoasTabular(List<Pessoa> pessoas) {
-        StringBuilder sb = new StringBuilder();
 
-        // Itera por cada pessoa na lista
-        for (int i = 0; i < pessoas.size(); i++) {
-            Pessoa pessoa = pessoas.get(i);
-
-            // Linha de cabeçalho da pessoa
-            sb.append("ID | Nome | Idade | Documentos da Pessoa | - | -\n");
-
-            // Linha de dados da pessoa
-            sb.append(pessoa.getId()).append(" | ")
-                    .append(pessoa.getNome()).append(" | ")
-                    .append(pessoa.getIdade()).append(" | ")
-                    .append("Documentos | - | -\n");
-
-            // Linha de cabeçalho dos documentos
-            sb.append("- | - | - | Tipo do Documento | Número do Documento | Descrição do Documento\n");
-
-            // Linha para cada documento
-            for (Documento doc : pessoa.getDocumentos()) {
-                sb.append("- | - | - | ")
-                        .append(doc.getTipo().getSigla()).append(" | ")
-                        .append(doc.getNumero()).append(" | ")
-                        .append(doc.getTipo().getDescricao()).append("\n");
-            }
-
-            // Insere uma linha em branco após as informações de cada pessoa
-            sb.append("\n");
-        }
-
-        return sb.toString();
-    }
 }
