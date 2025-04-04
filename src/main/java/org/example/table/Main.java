@@ -1,7 +1,10 @@
 package org.example.table;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -71,8 +74,94 @@ public class Main {
         pessoas.add(pessoa5);
         pessoas.add(pessoa6);
         pessoas.add(pessoa7);
-        
+
+        System.out.println("\n>>1 - LISTAR PESSOA COM ID 2.");
+        listarPessoaPorId(pessoas,2);
+        System.out.println("\n>> 2 - LISTAGEM DE PESSOAS EM ORDEM CRESCENTE DE IDADE");
+        listarPessoasOrdenadasPorIdade(pessoas);
+        System.out.println("\n>> 3 - LISTAGEM DE PESSOAS COM IDADE SUPERIOR A 50 ANOS.");
+        listarPessoasComIdadeSuperior(pessoas, 50);
+        System.out.println("\n>> 4 - LISTAGEM DE PESSOAS QUE NÃO POSSUEM CPF.");
+        listarPessoasSemCPF(pessoas);
+        System.out.println("\n>> 5 - LISTAGEM DE TIPOS DE DOCUMENTOS.");
+        listarTiposDeDocumentos(pessoas);
+
     }
 
+    /*
+     Função 1 - Recebe a lista de pessoas e o id da pessoa a ser encontrada como parâmetros.
+     Imprime a informações da pessoa ou a string "Pessoa não encontrada".
+    */
+    public static void listarPessoaPorId(List<Pessoa> pessoas, int pessoaId) {
+        Pessoa pessoaEncontrada = pessoas.stream().filter(pessoa -> pessoa.getId() == pessoaId).findFirst().orElse(null);
+        if ( pessoaEncontrada != null) {
+            listarPessoa(pessoaEncontrada); ;
+        } else {
+            System.out.println("Pessoa não encontrada");
+        }
+    }
 
+    /*
+     Função 2 - Recebe a lista de pessoas como parâmetro, ordena por idade em ordem crescente e imprime cada item da lista.
+    */
+    public static void listarPessoasOrdenadasPorIdade(List<Pessoa> pessoas) {
+        pessoas.stream()
+                .sorted(Comparator.comparingInt(Pessoa::getIdade))
+                .forEach(Main::listarPessoa);
+    }
+
+    /*
+    Função 3 - Recebe a lista de pessoas e uma idade alvo como parâmetros.
+    Filtra cada pessoa da lista de pessoas com idade superior à idade alvo e imprime cada pessoa filtrada.
+   */
+    public static void listarPessoasComIdadeSuperior(List<Pessoa> pessoas, int idade) {
+        pessoas.stream().filter(pessoa -> pessoa.getIdade() > idade).forEach(Main::listarPessoa);
+    }
+
+    /*
+    Função 4 - Recebe a lista de pessoas como parâmetro.
+    Filtra cada pessoa da lista e imprime pessoas sem o documento CPF.
+   */
+    public static void listarPessoasSemCPF(List<Pessoa> pessoas) {
+        pessoas.stream().
+                filter(pessoa -> pessoa.getDocumentos().stream()
+                        .noneMatch(documento -> documento.getTipo().getSigla().equals("CPF")))
+                .forEach(Main::listarPessoa);
+    }
+
+    /*
+    Função 5 - Recebe a lista de pessoas como parâmetro.
+    Filtra cada documento de cada pessoa da lista, cria um HashSet e coleta siglas de documentos nele, posteiormente é impresso cada elemento do Set.
+   */
+    public static void listarTiposDeDocumentos(List<Pessoa> pessoas) {
+        Set<String> tiposDeDocumentos = pessoas.stream().
+                flatMap(pessoa -> pessoa.getDocumentos().stream())
+                .map(Documento::getTipo)
+                .map(TipoDocumento::getSigla)
+                .collect(Collectors.toSet());
+
+        System.out.println("- Tipos de Documentos:");
+        tiposDeDocumentos.forEach(System.out::println);
+    }
+
+    /*
+    Função utilitária que recebe uma pessoa como parâmetro.
+    Imprime informações da pessoa recebida como parâmetro em uma estrutura personalizada com StringBuilder.
+   */
+    public static void listarPessoa(Pessoa pessoa) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("\nID:").append(pessoa.getId())
+                .append(", Nome: ").append(pessoa.getNome())
+                .append(", Idade: ").append(pessoa.getIdade())
+                .append("\n Documentos: ");
+
+        for (Documento doc : pessoa.getDocumentos()) {
+            sb.append("\n- Tipo: ").append(doc.getTipo().getSigla())
+                    .append(", Número: ").append(doc.getNumero())
+                    .append(", Descrição: ").append(doc.getTipo().getDescricao());
+        }
+
+        System.out.println(sb.toString());
+    }
 }
