@@ -1,8 +1,4 @@
-package org.example;
-
-import org.example.table.Documento;
-import org.example.table.TipoDocumento;
-import org.example.table.Pessoa;
+package org.example.table;
 
 import java.util.ArrayList;
 import java.util.List;
