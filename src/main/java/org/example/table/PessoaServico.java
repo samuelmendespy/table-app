@@ -1,6 +1,11 @@
 package org.example.table;
 
+import com.sun.net.httpserver.HttpExchange;
+import org.json.simple.JSONArray;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -139,4 +144,55 @@ public class PessoaServico {
 
         return sb.toString();
     }
+
+    /**
+     * Listar todas pessoas com metodo GET em /api/pessoas
+     */
+    public void handleObterTodasPessoas(HttpExchange exchange) throws IOException {
+        // Obter todas as pessoas
+        List<Pessoa> listaPessoas = repositorioPessoa.encontrarTodas();
+
+        // Criar array json com listaPessoas
+        JSONArray result = new JSONArray();
+        for (Pessoa n : listaPessoas) {
+            result.add(n.getJSONObject());
+        }
+
+        // Entregar JSON
+        String json = result.toJSONString();
+        byte[] bytes = json.getBytes();
+        exchange.getResponseHeaders().set("Content-Type", "application/json");
+        exchange.sendResponseHeaders(200, bytes.length);
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(bytes);
+        }
+    }
+
+    /**
+     * Listar pessoa por ID com metodo GET em /api/pessoas/{id}
+     */
+    public void handleObterPessoaPorId(HttpExchange exchange, int pessoaId) throws IOException {
+        // Obter pessoa com id informado
+        Pessoa pessoaEncontrada = repositorioPessoa.encontrarPorId(pessoaId);
+
+        if (pessoaEncontrada == null) {
+            sendStatus(exchange, 404);
+            return;
+        }
+
+        // Retorna a pessoa encontrada em JSON para strings
+        String json = pessoaEncontrada.getJSONObject().toJSONString();
+        byte[] bytes = json.getBytes();
+        exchange.getResponseHeaders().set("Content-Type", "application/json");
+        exchange.sendResponseHeaders(200, bytes.length);
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(bytes);
+        }
+    }
+
+    public void sendStatus(HttpExchange exchange, int code) throws IOException {
+        exchange.sendResponseHeaders(code, -1);
+        exchange.close();
+    }
+
 }
