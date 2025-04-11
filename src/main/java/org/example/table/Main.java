@@ -1,7 +1,12 @@
 package org.example.table;
 
+import com.sun.net.httpserver.HttpServer;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         // Inicializa o repositório
         PessoaRepositorio pessoaRepositorio = new PessoaRepositorio();
@@ -93,6 +98,19 @@ public class Main {
         System.out.println("\n>> 5 - LISTAGEM DE TIPOS DE DOCUMENTOS.");
         System.out.println(pessoaServico.listarTiposDeDocumentos());
 
-    }
+        // Instanciando o Controlador
+        PessoaControlador controlador = new PessoaControlador(pessoaServico);
 
+        // Estabelecer um servidor HTTP na porta 8080
+        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+
+        // Definir contexto /api/pessoas
+        server.createContext("/api/pessoas", controlador::handlePessoas);
+
+        // Iniciar o servidor
+        server.start();
+
+        // Informar no terminal que o servidor está em execução
+        System.out.println("Server is running on http://localhost:8080");
+    }
 }
