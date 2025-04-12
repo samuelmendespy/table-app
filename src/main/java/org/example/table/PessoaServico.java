@@ -154,9 +154,7 @@ public class PessoaServico {
 
         // Criar array json com listaPessoas
         JSONArray result = new JSONArray();
-        for (Pessoa n : listaPessoas) {
-            result.add(n.getJSONObject());
-        }
+        listaPessoas.forEach(pessoa -> result.add(pessoa.getJSONObject()));
 
         // Entregar JSON
         String json = result.toJSONString();
@@ -182,6 +180,88 @@ public class PessoaServico {
 
         // Retorna a pessoa encontrada em JSON para strings
         String json = pessoaEncontrada.getJSONObject().toJSONString();
+        byte[] bytes = json.getBytes();
+        exchange.getResponseHeaders().set("Content-Type", "application/json");
+        exchange.sendResponseHeaders(200, bytes.length);
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(bytes);
+        }
+    }
+
+    public void handleObterPessoasOrdenadasPorIdade(HttpExchange exchange) throws IOException {
+        // Obter as pessoas em ordenadas crescente de idade
+        List<Pessoa> pessoasOrdenadasPorIdade = repositorioPessoa.encontrarTodas().stream()
+                .sorted(Comparator.comparingInt(Pessoa::getIdade))
+                .toList();
+
+        // Criar array json com listaPessoas
+        JSONArray result = new JSONArray();
+        pessoasOrdenadasPorIdade.forEach(result::add);
+
+        // Entregar JSON
+        String json = result.toJSONString();
+        byte[] bytes = json.getBytes();
+        exchange.getResponseHeaders().set("Content-Type", "application/json");
+        exchange.sendResponseHeaders(200, bytes.length);
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(bytes);
+        }
+    }
+
+    public void handleObterPessoasComIdadeSuperior(HttpExchange exchange, int idade) throws IOException {
+        // Obter as pessoas com idade maior que a idade recebida como parâmetro
+        List<Pessoa> pessoasComIdadeSuperior = repositorioPessoa.encontrarTodas().stream()
+                .filter(p -> p.getIdade() > idade)
+                .toList();
+
+        // Criar array json com listaPessoas
+        JSONArray result = new JSONArray();
+        pessoasComIdadeSuperior.forEach(result::add);
+
+        // Entregar JSON
+        String json = result.toJSONString();
+        byte[] bytes = json.getBytes();
+        exchange.getResponseHeaders().set("Content-Type", "application/json");
+        exchange.sendResponseHeaders(200, bytes.length);
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(bytes);
+        }
+    }
+
+    public void handleObterPessoasSemCPF(HttpExchange exchange) throws IOException {
+        // Obter as pessoas sem CPF
+        List<Pessoa> pessoasSemCPF = repositorioPessoa.encontrarTodas().stream()
+                .filter(pessoa -> pessoa.getDocumentos().stream().noneMatch(documento -> documento.getTipo().getSigla().equals("CPF")))
+                .toList();
+
+        // Criar array json com listaPessoas
+        JSONArray result = new JSONArray();
+        pessoasSemCPF.forEach(result::add);
+
+        // Entregar JSON
+        String json = result.toJSONString();
+        byte[] bytes = json.getBytes();
+        exchange.getResponseHeaders().set("Content-Type", "application/json");
+        exchange.sendResponseHeaders(200, bytes.length);
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(bytes);
+        }
+    }
+
+    public void handleObterTiposDeDocumentos(HttpExchange exchange) throws IOException {
+        // Obter os tipos de Documentos únicos
+        Set<String> tiposDeDocumentos = repositorioPessoa.encontrarTodas().stream().
+                flatMap(p -> p.getDocumentos().stream())
+                .map(Documento::getTipo)
+                .map(TipoDocumento::getSigla)
+                .collect(Collectors.toSet());
+
+        // Criar array json com listaPessoas
+        JSONArray result = new JSONArray();
+        result.addAll(tiposDeDocumentos);
+
+        // Entregar JSON
+        String json = result.toJSONString();
         byte[] bytes = json.getBytes();
         exchange.getResponseHeaders().set("Content-Type", "application/json");
         exchange.sendResponseHeaders(200, bytes.length);
