@@ -1,4 +1,6 @@
-package org.example.table;
+package org.example.table.repositorio;
+
+import org.example.table.modelo.Pessoa;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.example.table;
+package org.example.table.modelo;
 
 public enum TipoDocumento {
     CPF("CPF", "Cadastro Pessoa Física"),

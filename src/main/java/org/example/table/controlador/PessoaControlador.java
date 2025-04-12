@@ -1,6 +1,8 @@
-package org.example.table;
+package org.example.table.controlador;
 
 import com.sun.net.httpserver.HttpExchange;
+import org.example.table.servico.PessoaServico;
+
 import java.io.IOException;
 import java.net.URI;
 import java.util.logging.Level;

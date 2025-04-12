@@ -1,6 +1,12 @@
 package org.example.table;
 
 import com.sun.net.httpserver.HttpServer;
+import org.example.table.controlador.PessoaControlador;
+import org.example.table.modelo.Documento;
+import org.example.table.modelo.Pessoa;
+import org.example.table.modelo.TipoDocumento;
+import org.example.table.repositorio.PessoaRepositorio;
+import org.example.table.servico.PessoaServico;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

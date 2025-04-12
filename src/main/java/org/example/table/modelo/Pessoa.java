@@ -1,4 +1,4 @@
-package org.example.table;
+package org.example.table.modelo;
 
 import org.json.simple.JSONObject;
 

@@ -1,6 +1,10 @@
-package org.example.table;
+package org.example.table.servico;
 
 import com.sun.net.httpserver.HttpExchange;
+import org.example.table.modelo.Documento;
+import org.example.table.modelo.Pessoa;
+import org.example.table.modelo.TipoDocumento;
+import org.example.table.repositorio.PessoaRepositorio;
 import org.json.simple.JSONArray;
 import java.io.IOException;
 import java.io.OutputStream;
