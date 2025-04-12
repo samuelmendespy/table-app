@@ -21,18 +21,32 @@ public class PessoaControlador {
             String method = exchange.getRequestMethod();
             URI requestURI = exchange.getRequestURI();
             String path = requestURI.getPath();
-            if ("/api/pessoas".equals(path)) {
-                if ("GET".equalsIgnoreCase(method)) {
+            if ("GET".equalsIgnoreCase(method)) {
+                if ("/api/pessoas".equals(path)) {
                     pessoaServico.handleObterTodasPessoas(exchange);
-                } else {
-                    pessoaServico.sendStatus(exchange, 405);
+                } else if (path.matches("/api/users/\\d+")) { // Função 1 :Pessoa com ID
+                    String parametro = path.substring("/api/users/".length());
+                    try {
+                        int pessoaId = Integer.parseInt(parametro);
+                        pessoaServico.handleObterPessoaPorId(exchange, pessoaId);
+                    } catch (NumberFormatException e) {
+                        pessoaServico.sendStatus(exchange, 400);
+                    }
+                } else if ("/api/pessoas/ordenadas-por-idade".equals(path)) { // Função 2 :Pessoas com Idade Crescente
+                    pessoaServico.handleObterPessoasOrdenadasPorIdade(exchange);
+                } else if ("/api/pessoas/com-idade-superior".equals(path)) { // Função 3 : Pessoas com idade superior
+                    String parametro = path.substring("/api/pessoas/com-idade-superior/".length());
+                    try {
+                        int idadeAlvo = Integer.parseInt(parametro);
+                        pessoaServico.handleObterPessoasComIdadeSuperior(exchange, idadeAlvo);
+                    } catch (NumberFormatException e) {
+                        pessoaServico.sendStatus(exchange, 400);
+                    }
+                } else if ("/api/pessoas/sem-cpf".equals(path)) { // Função 4 : Pessoas sem CPF
+                    pessoaServico.handleObterPessoasSemCPF(exchange);
+                } else if ("/api/pessoas/tipos-de-documentos".equals(path)) { // Função 5 : Tipos de documentos cadastrados
+                    pessoaServico.handleObterTiposDeDocumentos(exchange);
                 }
-                return;
-            }
-            String[] parts = path.split("/");
-            if (parts.length == 4 && "GET".equalsIgnoreCase(method)) {
-                int id = Integer.parseInt(parts[3]);
-                pessoaServico.handleObterPessoaPorId(exchange, id);
                 return;
             }
             pessoaServico.sendStatus(exchange, 404);
