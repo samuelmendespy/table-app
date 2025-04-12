@@ -16,7 +16,7 @@ public class PessoaControlador {
         this.pessoaServico = pessoaServico;
     }
 
-    public void handlePessoas(HttpExchange exchange) throws IOException {
+    public void handle(HttpExchange exchange) throws IOException {
         try {
             String method = exchange.getRequestMethod();
             URI requestURI = exchange.getRequestURI();

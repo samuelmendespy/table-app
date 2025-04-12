@@ -105,7 +105,7 @@ public class Main {
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
 
         // Definir contexto /api/pessoas
-        server.createContext("/api/pessoas", controlador::handlePessoas);
+        server.createContext("/api/pessoas", controlador::handle);
 
         // Iniciar o servidor
         server.start();
