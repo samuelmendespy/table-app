@@ -1,5 +1,6 @@
-package org.example.table;
+package org.example.table.modelo;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
@@ -53,6 +54,14 @@ public class Pessoa {
         obj.put("id", id);
         obj.put("nome", nome);
         obj.put("idade", idade);
+        obj.put("documentos", documentos);
+
+        JSONArray docsArray = new JSONArray();
+        for (Documento documento : documentos) {
+            docsArray.add(documento.getJSONObject());
+        }
+        obj.put("documentos", docsArray);
+
         return obj;
     }
 
