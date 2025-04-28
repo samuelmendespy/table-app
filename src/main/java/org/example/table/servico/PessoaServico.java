@@ -156,17 +156,24 @@ public class PessoaServico {
         // Obter todas as pessoas
         List<Pessoa> listaPessoas = repositorioPessoa.encontrarTodas();
 
-        // Criar array json com listaPessoas
-        JSONArray result = new JSONArray();
-        listaPessoas.forEach(pessoa -> result.add(pessoa.getJSONObject()));
+        if (listaPessoas.isEmpty()) {
+            // Retorna HTTP 204 quando a lista Pessoas estiver vazia
+            exchange.sendResponseHeaders(204, -1);
+        }
+        else {
 
-        // Entregar JSON
-        String json = result.toJSONString();
-        byte[] bytes = json.getBytes();
-        exchange.getResponseHeaders().set("Content-Type", "application/json");
-        exchange.sendResponseHeaders(200, bytes.length);
-        try (OutputStream os = exchange.getResponseBody()) {
-            os.write(bytes);
+            // Criar array json com listaPessoas
+            JSONArray result = new JSONArray();
+            listaPessoas.forEach(pessoa -> result.add(pessoa.getJSONObject()));
+
+            // Entregar JSON
+            String json = result.toJSONString();
+            byte[] bytes = json.getBytes();
+            exchange.getResponseHeaders().set("Content-Type", "application/json");
+            exchange.sendResponseHeaders(200, bytes.length);
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(bytes);
+            }
         }
     }
 

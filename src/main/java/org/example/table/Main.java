@@ -110,8 +110,8 @@ public class Main {
         // Estabelecer um servidor HTTP na porta 8080
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
 
-        // Definir contexto /api/pessoas
-        server.createContext("/api/pessoas", controlador::handle);
+        // Definir contexto api pessoas
+        server.createContext("pessoas", controlador::handle);
 
         // Iniciar o servidor
         server.start();
