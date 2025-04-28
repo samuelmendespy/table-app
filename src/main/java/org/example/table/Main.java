@@ -111,7 +111,7 @@ public class Main {
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
 
         // Definir contexto api pessoas
-        server.createContext("pessoas", controlador::handle);
+        server.createContext("/pessoas", controlador::handle);
 
         // Iniciar o servidor
         server.start();
