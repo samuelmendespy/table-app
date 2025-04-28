@@ -1,5 +1,7 @@
 package org.example.table.modelo;
 
+import org.json.simple.JSONObject;
+
 public class Documento {
     private TipoDocumento tipo;
     private String numero;
@@ -23,6 +25,14 @@ public class Documento {
 
     public void setNumero(String numero) {
         this.numero = numero;
+    }
+
+    public JSONObject getJSONObject() {
+        JSONObject obj = new JSONObject();
+        obj.put("tipo", tipo.getSigla());
+        obj.put("numero", numero);
+        obj.put("descricao", tipo.getDescricao());
+        return obj;
     }
 
     @Override

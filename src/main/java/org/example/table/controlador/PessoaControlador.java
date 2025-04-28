@@ -26,8 +26,8 @@ public class PessoaControlador {
             if ("GET".equalsIgnoreCase(method)) {
                 if ("/api/pessoas".equals(path)) {
                     pessoaServico.handleObterTodasPessoas(exchange);
-                } else if (path.matches("/api/users/\\d+")) { // Função 1 :Pessoa com ID
-                    String parametro = path.substring("/api/users/".length());
+                } else if (path.matches("/api/pessoas/\\d+")) { // Função 1 :Pessoa com ID
+                    String parametro = path.substring("/api/pessoas/".length());
                     try {
                         int pessoaId = Integer.parseInt(parametro);
                         pessoaServico.handleObterPessoaPorId(exchange, pessoaId);
@@ -36,7 +36,7 @@ public class PessoaControlador {
                     }
                 } else if ("/api/pessoas/ordenadas-por-idade".equals(path)) { // Função 2 :Pessoas com Idade Crescente
                     pessoaServico.handleObterPessoasOrdenadasPorIdade(exchange);
-                } else if ("/api/pessoas/com-idade-superior".equals(path)) { // Função 3 : Pessoas com idade superior
+                } else if (path.matches("/api/pessoas/com-idade-superior/\\d+")) { // Função 3 : Pessoas com idade superior
                     String parametro = path.substring("/api/pessoas/com-idade-superior/".length());
                     try {
                         int idadeAlvo = Integer.parseInt(parametro);

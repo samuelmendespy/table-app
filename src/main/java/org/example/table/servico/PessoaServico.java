@@ -240,7 +240,7 @@ public class PessoaServico {
 
         // Criar array json com listaPessoas
         JSONArray result = new JSONArray();
-        pessoasSemCPF.forEach(result::add);
+        pessoasSemCPF.forEach(pessoa -> result.add(pessoa.getJSONObject()));
 
         // Entregar JSON
         String json = result.toJSONString();
