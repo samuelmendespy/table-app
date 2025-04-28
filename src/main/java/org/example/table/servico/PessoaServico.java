@@ -184,6 +184,7 @@ public class PessoaServico {
         // Obter pessoa com id informado
         Pessoa pessoaEncontrada = repositorioPessoa.encontrarPorId(pessoaId);
 
+        // Retornar 404 quando não existir a pessoa com o id informado
         if (pessoaEncontrada == null) {
             sendStatus(exchange, 404);
             return;
@@ -207,7 +208,7 @@ public class PessoaServico {
 
         // Criar array json com listaPessoas
         JSONArray result = new JSONArray();
-        pessoasOrdenadasPorIdade.forEach(result::add);
+        pessoasOrdenadasPorIdade.forEach(pessoa -> result.add(pessoa.getJSONObject()));
 
         // Entregar JSON
         String json = result.toJSONString();
