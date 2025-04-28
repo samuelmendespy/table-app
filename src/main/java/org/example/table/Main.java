@@ -1,6 +1,7 @@
 package org.example.table;
 
 import com.sun.net.httpserver.HttpServer;
+import com.sun.net.httpserver.SimpleFileServer;
 import org.example.table.controlador.PessoaControlador;
 import org.example.table.modelo.Documento;
 import org.example.table.modelo.Pessoa;
@@ -10,6 +11,8 @@ import org.example.table.servico.PessoaServico;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -109,6 +112,9 @@ public class Main {
 
         // Estabelecer um servidor HTTP na porta 8080
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+
+       Path folder = Paths.get(System.getProperty("user.dir"), "src", "static");
+        server.createContext("/", SimpleFileServer.createFileHandler(folder));
 
         // Definir contexto api pessoas
         server.createContext("/pessoas", controlador::handle);
