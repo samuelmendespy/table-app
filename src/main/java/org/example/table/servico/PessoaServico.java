@@ -207,7 +207,7 @@ public class PessoaServico {
                 .toList();
 
         if (pessoasOrdenadasPorIdade.isEmpty()) {
-            // Retorna HTTP 204 quando a lista com Pessoas ordenadas por idade estiver vazia
+            // Retorna HTTP 204 quando a lista estiver vazia
             exchange.sendResponseHeaders(204, -1);
         } else {
 
@@ -233,7 +233,7 @@ public class PessoaServico {
                 .toList();
 
         if (pessoasComIdadeSuperior.isEmpty()) {
-            // Retorna HTTP 204 quando a lista com Pessoas ordenadas por idade estiver vazia
+            // Retorna HTTP 204 quando a lista estiver vazia
             exchange.sendResponseHeaders(204, -1);
         } else {
             // Criar array json com listaPessoas
@@ -257,17 +257,22 @@ public class PessoaServico {
                 .filter(pessoa -> pessoa.getDocumentos().stream().noneMatch(documento -> documento.getTipo().getSigla().equals("CPF")))
                 .toList();
 
-        // Criar array json com listaPessoas
-        JSONArray result = new JSONArray();
-        pessoasSemCPF.forEach(pessoa -> result.add(pessoa.getJSONObject()));
+        if (pessoasSemCPF.isEmpty()) {
+            // Retorna HTTP 204 quando a lista estiver vazia
+            exchange.sendResponseHeaders(204, -1);
+        } else {
+            // Criar array json com listaPessoas
+            JSONArray result = new JSONArray();
+            pessoasSemCPF.forEach(pessoa -> result.add(pessoa.getJSONObject()));
 
-        // Entregar JSON
-        String json = result.toJSONString();
-        byte[] bytes = json.getBytes();
-        exchange.getResponseHeaders().set("Content-Type", "application/json");
-        exchange.sendResponseHeaders(200, bytes.length);
-        try (OutputStream os = exchange.getResponseBody()) {
-            os.write(bytes);
+            // Entregar JSON
+            String json = result.toJSONString();
+            byte[] bytes = json.getBytes();
+            exchange.getResponseHeaders().set("Content-Type", "application/json");
+            exchange.sendResponseHeaders(200, bytes.length);
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(bytes);
+            }
         }
     }
 
