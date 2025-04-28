@@ -284,17 +284,22 @@ public class PessoaServico {
                 .map(TipoDocumento::getSigla)
                 .collect(Collectors.toSet());
 
-        // Criar array json com listaPessoas
-        JSONArray result = new JSONArray();
-        result.addAll(tiposDeDocumentos);
+        if (tiposDeDocumentos.isEmpty()) {
+            // Retorna HTTP 204 quando a lista estiver vazia
+            exchange.sendResponseHeaders(204, -1);
+        } else {
+            // Criar array json com listaPessoas
+            JSONArray result = new JSONArray();
+            result.addAll(tiposDeDocumentos);
 
-        // Entregar JSON
-        String json = result.toJSONString();
-        byte[] bytes = json.getBytes();
-        exchange.getResponseHeaders().set("Content-Type", "application/json");
-        exchange.sendResponseHeaders(200, bytes.length);
-        try (OutputStream os = exchange.getResponseBody()) {
-            os.write(bytes);
+            // Entregar JSON
+            String json = result.toJSONString();
+            byte[] bytes = json.getBytes();
+            exchange.getResponseHeaders().set("Content-Type", "application/json");
+            exchange.sendResponseHeaders(200, bytes.length);
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(bytes);
+            }
         }
     }
 
