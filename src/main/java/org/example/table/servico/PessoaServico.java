@@ -206,17 +206,23 @@ public class PessoaServico {
                 .sorted(Comparator.comparingInt(Pessoa::getIdade))
                 .toList();
 
-        // Criar array json com listaPessoas
-        JSONArray result = new JSONArray();
-        pessoasOrdenadasPorIdade.forEach(pessoa -> result.add(pessoa.getJSONObject()));
+        if (pessoasOrdenadasPorIdade.isEmpty()) {
+            // Retorna HTTP 204 quando a lista com Pessoas ordenadas por idade estiver vazia
+            exchange.sendResponseHeaders(204, -1);
+        } else {
 
-        // Entregar JSON
-        String json = result.toJSONString();
-        byte[] bytes = json.getBytes();
-        exchange.getResponseHeaders().set("Content-Type", "application/json");
-        exchange.sendResponseHeaders(200, bytes.length);
-        try (OutputStream os = exchange.getResponseBody()) {
-            os.write(bytes);
+            // Criar array json com listaPessoas
+            JSONArray result = new JSONArray();
+            pessoasOrdenadasPorIdade.forEach(pessoa -> result.add(pessoa.getJSONObject()));
+
+            // Entregar JSON
+            String json = result.toJSONString();
+            byte[] bytes = json.getBytes();
+            exchange.getResponseHeaders().set("Content-Type", "application/json");
+            exchange.sendResponseHeaders(200, bytes.length);
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(bytes);
+            }
         }
     }
 
@@ -226,17 +232,22 @@ public class PessoaServico {
                 .filter(p -> p.getIdade() > idade)
                 .toList();
 
-        // Criar array json com listaPessoas
-        JSONArray result = new JSONArray();
-        pessoasComIdadeSuperior.forEach(result::add);
+        if (pessoasComIdadeSuperior.isEmpty()) {
+            // Retorna HTTP 204 quando a lista com Pessoas ordenadas por idade estiver vazia
+            exchange.sendResponseHeaders(204, -1);
+        } else {
+            // Criar array json com listaPessoas
+            JSONArray result = new JSONArray();
+            pessoasComIdadeSuperior.forEach(pessoa -> result.add(pessoa.getJSONObject()));
 
-        // Entregar JSON
-        String json = result.toJSONString();
-        byte[] bytes = json.getBytes();
-        exchange.getResponseHeaders().set("Content-Type", "application/json");
-        exchange.sendResponseHeaders(200, bytes.length);
-        try (OutputStream os = exchange.getResponseBody()) {
-            os.write(bytes);
+            // Entregar JSON
+            String json = result.toJSONString();
+            byte[] bytes = json.getBytes();
+            exchange.getResponseHeaders().set("Content-Type", "application/json");
+            exchange.sendResponseHeaders(200, bytes.length);
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(bytes);
+            }
         }
     }
 
