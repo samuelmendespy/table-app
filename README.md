@@ -1,9 +1,11 @@
 # table-app
  
-O presente repositório contém a solução em Java para listagem de informações de pessoas e documentos.
+O presente repositório contém a solução em Java para listagem de informações com API e um front-end básico com HTML,CSS e JavaScript.
 
 ## Conteúdo
-
+- **API com HTTP Server em Java**
+- **Testes da API**
+- Página HTML com CSS e JavaScript para consumir a API.
 - **Classes em Java para Pessoa e Documento.**
 - **Código em Java para instanciar os objetos**
 - **Solução de Listagem para:**
