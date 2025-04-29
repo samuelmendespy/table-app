@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <title>Página Inicial Listagem de Pessoas e Documentos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:ital@0;1&display=swap"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+    <h1>Listagem</h1>
+    <div class="info" id="infoText">Exibindo todos os registros</div>
+    <table id="personsTable">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Idade</th>
+            <th>Documento</th>
+            <th>Número</th>
+            <th>Descrição</th>
+        </tr>
+        </thead>
+        <tbody id="personsData"></tbody>
+    </table>
+    <div class="options">
+        <button onclick="displayAll()">Exibir Todos</button>
+        <button onclick="filterPersonById(2)">Filtrar Pessoa com ID 2</button>
+        <button onclick="sortPersonsByAge()">Listar Pessoas em Ordem Crescente de Idade</button>
+        <button onclick="filterPersonsAboveAge(50)">Filtrar Pessoas com Idade superior a 50 anos</button>
+        <button onclick="filterPersonsWithouthCPF()">Filtrar Pessoas sem Documento CPF</button>
+        <button onclick="listDocumentTypes()">Filtrar Tipos de Documento</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
