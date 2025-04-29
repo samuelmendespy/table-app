@@ -219,6 +219,7 @@ function renderTable(dados, mostrarApenasDocumento = null) {
 
 // Função para mostrar todos os dados
 function displayAll() {
+  console.log("Exibindo todos os registros");
   renderTable(personsData);
   document.getElementById("infoText").textContent =
     "Mostrando todos os registros";
@@ -226,30 +227,38 @@ function displayAll() {
 
 // 1 - Função para filtrar por ID
 function filterPersonById(personId) {
+  console.log("1 - Listar pessoa com determinado ID", personId);
   const pessoaFiltrada = personsData.filter(
-    (pessoa) => pessoa.ID === personId.toString()
+    (pessoa) => pessoa.ID === parseInt(personId)
   );
-  renderTable(pessoaFiltrada);
+  
+  const pessoasComDeterminadoId = [];
+
+  if (pessoaFiltrada.length > 0 ) {
+    pessoasComDeterminadoId.push(pessoaFiltrada[0]);
+    console.log("A pessoa foi filtrada.");
+  } else {
+    console.log("Pessoa não encontrada.");
+    document.getElementById(
+      "infoText"
+    ).textContent = `ERRO: A pessoa com ID ${personId} não foi encontrada.`;
+    return;
+  }
+
+  renderTable(pessoasComDeterminadoId);
   document.getElementById(
     "infoText"
   ).textContent = `Mostrando pessoa com ID ${personId}`;
 }
 
-// 2 - Função para filtrar pessoas e ordenar em ordem de idade crescente
+// 2 - Função para filtrar ordenar em ordem de idade crescente
 function sortPersonsByAge() {
+  console.log("2 - Listar pessoas em ordem crescente de idade")
   // Ordena por idade
   const sortedPersons = [...personsData].sort((a, b) => a.Idade - b.Idade);
 
   // Cria uma nova array apenas com os dados necessários
-  const result = sortedPersons.map((pessoa) => {
-    const cpf = pessoa.Documentos.find((doc) => doc.Tipo === "CPF");
-    return {
-      ID: pessoa.ID,
-      Nome: pessoa.Nome,
-      Idade: pessoa.Idade,
-      Documentos: [cpf],
-    };
-  });
+  const result = sortedPersons;
 
   renderTable(result);
   document.getElementById("infoText").textContent =
@@ -258,6 +267,7 @@ function sortPersonsByAge() {
 
 // 3 - Função para filtrar pessoas mais de 50 anos de idade
 function filterPersonsAboveAge(targetAge) {
+  console.log("3 - Listar persons acima de determinada idade")
   const filteredPersons = personsData.filter(
     (pessoa) => pessoa.Idade > parseInt(targetAge)
   );
@@ -269,6 +279,7 @@ function filterPersonsAboveAge(targetAge) {
 
 // 4 - Função para filtrar pessoas sem CPF
 function filterPersonsWithouthCPF() {
+  console.log("4 - Listar pessoas sem CPF");
   const personsWithouthCPF = personsData.filter((pessoa) => {
     return !pessoa.Documentos.some((doc) => doc.Tipo === "CPF");
   });
@@ -279,6 +290,7 @@ function filterPersonsWithouthCPF() {
 
 // 5 - Função para listar os tipos de documentos
 function listDocumentTypes() {
+  console.log("5 - Listar tipos de documentos");
   // Criar Set com tipos de documentos para não listar valores duplicados.
   const tiposDocumentos = new Set();
   personsData.forEach((pessoa) => {
