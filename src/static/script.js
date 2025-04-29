@@ -7,7 +7,7 @@ let personsData = [];
 // Dados padrao para exemplo
 const defaultData = [
   {
-    ID: "1",
+    ID: 1,
     Nome: "Luiz Roberto",
     Idade: 33,
     Documentos: [
@@ -29,7 +29,7 @@ const defaultData = [
     ],
   },
   {
-    ID: "2",
+    ID: 2,
     Nome: "Raimundo Soares",
     Idade: 51,
     Documentos: [
@@ -51,7 +51,7 @@ const defaultData = [
     ],
   },
   {
-    ID: "3",
+    ID: 3,
     Nome: "Ana Tavares",
     Idade: 24,
     Documentos: [
@@ -68,7 +68,7 @@ const defaultData = [
     ],
   },
   {
-    ID: "4",
+    ID: 4,
     Nome: "Janete Niebues",
     Idade: 28,
     Documentos: [
@@ -90,7 +90,7 @@ const defaultData = [
     ],
   },
   {
-    ID: "5",
+    ID: 5,
     Nome: "Paulo da Rosa",
     Idade: 74,
     Documentos: [
@@ -107,7 +107,7 @@ const defaultData = [
     ],
   },
   {
-    ID: "6",
+    ID: 6,
     Nome: "Wesley Soares",
     Idade: 60,
     Documentos: [
@@ -134,7 +134,7 @@ const defaultData = [
     ],
   },
   {
-    ID: "7",
+    ID: 7,
     Nome: "Tamires Souza",
     Idade: 12,
     Documentos: [
